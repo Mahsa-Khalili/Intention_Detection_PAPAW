@@ -239,7 +239,7 @@ columned_time_feat_datasets = combine_extracted_columns(time_featured_datasets) 
 
 # Saving feature extracted dataframes
 if EXPORT_PROCESSED_DATA:
-    path = os.path.join(CURR_PATH, 'Feature_Extracted_Data', USER, 'WinSize' + str(WIN_SIZE))
+    path = os.path.join(CURR_PATH, 'featured_data', USER, 'WinSize' + str(WIN_SIZE))
     pathlib.Path(path).mkdir(parents=True, exist_ok=True)
     save_dic(path, columned_time_feat_datasets)
 
