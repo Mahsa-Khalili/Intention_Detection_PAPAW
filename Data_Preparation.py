@@ -23,8 +23,8 @@ from featuresLib import *
 
 # DEFINITIONS
 USER = 'Mahsa'  # ['Mahsa', 'Jaimie']  # participant name
-f_samp = 240 # smartwheel sampling frequency
-IMU_samp = 200 # smartphone sampling frequency
+f_samp = 240  # smartwheel sampling frequency
+IMU_samp = 200  # smartphone sampling frequency
 cut_off = 5  # low-pass cut-off frequency
 WIN_SIZE = 32  # window size
 
@@ -105,13 +105,12 @@ def feature_func(datasetsF):
 
     def add_new_features(df):
         """ Appends L-R colummns to dataframe. If there is a column ending in "_L", there must be a "_R" too """
-        for col in ['Torque_L', 'Torque_R']:
-            df["Torque_sum"] = df['Torque_L'] + df['Torque_R']
-            df["Torque_diff"] = df['Torque_R'] - df['Torque_L']
+        df["Torque_sum"] = df['Torque_L'] + df['Torque_R']
+        df["Torque_diff"] = df['Torque_R'] - df['Torque_L']
 
         return df
 
-    def add_roc(df, dt):
+    def add_roc(df):
         """ add rate of change of features (columns) in a dataframe"""
         df_roc = df[['Torque_L', 'Torque_R']].diff().fillna(0)
         df_roc.columns = ['Torque_L_roc', 'Torque_R_roc']
@@ -226,7 +225,7 @@ def combine_extracted_columns(datasets):
     return combined_datasets
 
 
-dataset_paths = glob.glob(os.path.join(CURR_PATH, 'measurements', USER, '*.xls')) # data path
+dataset_paths = glob.glob(os.path.join(CURR_PATH, 'measurements', USER, '*.xls'))  # data path
 raw_datasets, dataset_labels = import_data(dataset_paths)  # import data
 filt_datasets = filt_func(raw_datasets)  # Filtering Data
 featured_datasets = feature_func(filt_datasets)  # Add new features (average, difference, rate of change of torque)
@@ -234,8 +233,11 @@ segmented_datasets = segment_func(featured_datasets)
 
 featured_columns = segmented_datasets[dataset_labels[0]][0].columns.tolist()
 
-time_featured_datasets = feature_extraction(segmented_datasets, time_features)  # Create array of features of each window for each dataset and direction
-columned_time_feat_datasets = combine_extracted_columns(time_featured_datasets)  # Take time feature data and combine axes columns
+# Create array of features of each window for each dataset and direction
+time_featured_datasets = feature_extraction(segmented_datasets, time_features)
+
+# Take time feature data and combine axes columns
+columned_time_feat_datasets = combine_extracted_columns(time_featured_datasets)
 
 # Saving feature extracted dataframes
 if EXPORT_PROCESSED_DATA:
@@ -243,4 +245,4 @@ if EXPORT_PROCESSED_DATA:
     pathlib.Path(path).mkdir(parents=True, exist_ok=True)
     save_dic(path, columned_time_feat_datasets)
 
-print("SUCCESS!!!")
+print("SUCCESSFULLY EXECUTED!!!!")

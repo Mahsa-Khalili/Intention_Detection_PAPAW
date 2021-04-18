@@ -8,11 +8,10 @@ Purpose:        This Python script prepare IMU data for terrain classification.
 """
 
 import os
-from os import path
 import glob
 import pathlib
 
-import random 
+import random
 import numpy as np
 import pandas as pd
 
@@ -131,7 +130,7 @@ def prep_func(data_dic):
     return df_all_stand, df_all_columns, featureSet_dic
 
 
-def clus_func(df_all, cv_type, n_components, feat_subset):
+def clus_func(df_all, n_components, feat_subset):
     """
     function to cluster and evaluate the clustering performance
     input: dataframe consisting of different maneuvers to be clustered, feature sets to be used for clustering,
@@ -314,7 +313,6 @@ def plt_ts_cluster_subset(df_, features_to_plot, man_list=maneuvers):
 
     if len(man_list) != 1:
         axs = axs.ravel()
-    i = 0
 
     for i, wheelchair_man in enumerate(man_list):
 
@@ -335,13 +333,15 @@ def plt_ts_cluster_subset(df_, features_to_plot, man_list=maneuvers):
             axs[i].yaxis.grid(True)
             axs[i].set_xlim([-1, len(df_clus)+1])
 
-            legend_elements = [Line2D([0], [0], marker='>', color='w', label='Right', markerfacecolor='k', markersize=15),
-                               Line2D([0], [0], marker='o', color='w', label='Left', markerfacecolor='k', markersize=15)]
+            legend_elements = [Line2D([0], [0], marker='>', color='w', label='Right',
+                                      markerfacecolor='k', markersize=15),
+                               Line2D([0], [0], marker='o', color='w', label='Left',
+                                      markerfacecolor='k', markersize=15)]
             axs[i].legend(handles=legend_elements, fontsize=legend_size)
 
         else:
-            axs.scatter(df_clus.index, df_clus[features_to_plot[0]], c=color_array, s = 16)
-            axs.scatter(df_clus.index, df_clus[features_to_plot[1]], c=color_array, s = 16, alpha = 0.7, marker = '>')
+            axs.scatter(df_clus.index, df_clus[features_to_plot[0]], c=color_array, s=16)
+            axs.scatter(df_clus.index, df_clus[features_to_plot[1]], c=color_array, s=16, alpha=0.7, marker='>')
 
             axs.tick_params(direction='out', labelsize=15)
             axs.set_ylabel('Torque (Nm)', fontsize=15)
@@ -349,8 +349,10 @@ def plt_ts_cluster_subset(df_, features_to_plot, man_list=maneuvers):
             axs.yaxis.grid(True)
             axs.set_xlim([-1, len(df_clus)+1])
 
-            legend_elements = [Line2D([0], [0], marker='>', color='w', label='Right', markerfacecolor='k', markersize=15),
-                               Line2D([0], [0], marker='o', color='w', label='Left', markerfacecolor='k', markersize=15)]
+            legend_elements = [Line2D([0], [0], marker='>', color='w', label='Right',
+                                      markerfacecolor='k', markersize=15),
+                               Line2D([0], [0], marker='o', color='w', label='Left',
+                                      markerfacecolor='k', markersize=15)]
             axs.legend(handles=legend_elements, fontsize=legend_size)
 
     plt.show()
@@ -363,9 +365,8 @@ df_all_stand, df_all_columns, featureSet_dic = prep_func(datasets)
 
 # run the cluster function or import trained model
 models, df_clus = clus_func(df_all_stand.copy(),
-                                clus_params['covar_types'],
-                                clus_params['n_components'],
-                                clus_params['feat_list'])
+                            clus_params['n_components'],
+                            clus_params['feat_list'])
 
 df_labeled = labeling_func(df_clus)  # adding labels to all datastes
 
@@ -383,5 +384,4 @@ filename = "gmm_labels" + '.csv'
 filename = os.path.join(processed_path, filename)
 df_labeled.to_csv(filename, index=False)
 
-
-print("SUCCESS!!!!")
+print("SUCCESSFULLY EXECUTED!!!!")
