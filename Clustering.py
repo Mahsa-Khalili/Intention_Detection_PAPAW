@@ -31,7 +31,6 @@ from sklearn.preprocessing import StandardScaler
 from sklearn import mixture
 
 
-
 # DEFINITIONS
 USER = 'Mahsa'  # ['Mahsa', 'Jaimie']  # participant name
 WIN_SIZE = 32  # window size
@@ -285,7 +284,7 @@ def plt_ts_cluster(df_, features_to_plot):
     range_dic = range_dic_(df_clus)
 
     for trial, range_ in range_dic.items():
-        axs[0].text(range_[0], axs[0].get_ylim()[1]+0.2, trial, fontsize = 15, rotation=45)
+        axs[0].text(range_[0], axs[0].get_ylim()[1]+0.2, trial, fontsize=15, rotation=45)
         for i in range(plt_num):
             axs[i].axvline(x=range_[0], linestyle='--', linewidth=0.5)
 
@@ -378,9 +377,9 @@ plt_ts_cluster(df_labeled, ['Mean Torque_L', 'Mean Torque_R'])  # plotting all l
 plt_ts_cluster_subset(df_labeled, ['Mean Torque_L', 'Mean Torque_R'], ['StraightF'])
 
 # if SAVE_DATA:
-processed_path = os.path.join(CURR_PATH, 'labeled_data', USER, str(WIN_SIZE))
+processed_path = os.path.join(CURR_PATH, 'labeled_data')
 pathlib.Path(processed_path).mkdir(parents=True, exist_ok=True)
-filename = "gmm_labels" + '.csv'
+filename = "gmm_labels.csv"
 filename = os.path.join(processed_path, filename)
 df_labeled.to_csv(filename, index=False)
 
